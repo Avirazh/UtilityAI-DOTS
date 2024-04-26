@@ -6,7 +6,6 @@ public readonly partial struct UnitAspect : IAspect
 {
     public readonly Entity Entity;
 
-    private readonly RefRO<MovableTag> _movableTag;
     private readonly RefRW<AgentBody> _agentBody;
 
     public void SetDestination(float3 destination)

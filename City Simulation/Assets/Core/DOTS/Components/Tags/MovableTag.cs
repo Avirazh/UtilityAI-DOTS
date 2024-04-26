@@ -1,5 +1,7 @@
 using Unity.Entities;
-public struct MovableTag : IComponentData
-{
+using UnityEngine;
 
+public class MovableTag : ICleanupComponentData
+{
+    public Transform transform;
 }
