@@ -1,6 +1,7 @@
 using ProjectDawn.Navigation;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 public readonly partial struct UnitAspect : IAspect
 {

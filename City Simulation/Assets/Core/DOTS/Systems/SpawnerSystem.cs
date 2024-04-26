@@ -25,6 +25,7 @@ namespace Assets.Core.DOTS.Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            _random.InitState(12333);
             new SpawnJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,
@@ -48,17 +49,22 @@ namespace Assets.Core.DOTS.Systems
 
             if(spawnerAspect.TimeToNextSpawn <= 0)
             {
-                var newUnit = EntityCommandBufferParallelWriter.Instantiate(indexInQuery, spawnerAspect.Prefab);
+                for (int i = 0; i < spawnerAspect.SpawnPoints.Length; i++)
+                {
+                    var newUnit = EntityCommandBufferParallelWriter.Instantiate(indexInQuery, spawnerAspect.Prefab);
 
-                spawnerAspect.TimeToNextSpawn = spawnerAspect.Timer;
+                    spawnerAspect.TimeToNextSpawn = spawnerAspect.Timer;
 
-                EntityCommandBufferParallelWriter.SetComponent(indexInQuery, newUnit, 
-                    new LocalTransform { Position = GetRandomSpawnPosition(spawnerAspect.SpawnPoints), Scale = 1f, Rotation = quaternion.identity });
+                    EntityCommandBufferParallelWriter.SetComponent(indexInQuery, newUnit,
+                        new LocalTransform { Position = spawnerAspect.SpawnPoints.ElementAt(i).Value, Scale = 1f, Rotation = quaternion.identity });
+                    //UnityEngine.Debug.Log($"{spawnerAspect.SpawnPoints.Length}");
+                }
             }
         }
         private float3 GetRandomSpawnPosition(DynamicBuffer<SpawnPointBufferComponent> spawnerPoints)
         {
-            var randomIndex = Random.NextInt(0, spawnerPoints.Length);
+            var randomIndex = Random.NextInt(spawnerPoints.Length);
+            UnityEngine.Debug.Log($"{spawnerPoints[randomIndex].Value}, {randomIndex}");
             return spawnerPoints[randomIndex].Value;
         }
     }

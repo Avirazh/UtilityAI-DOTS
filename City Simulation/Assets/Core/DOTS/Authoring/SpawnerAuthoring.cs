@@ -26,7 +26,7 @@ namespace Assets.Core.DOTS.Authoring
             }
 
             private void TryAddRangeSpawnPoints(SpawnerAuthoring authoring, DynamicBuffer<SpawnPointBufferComponent> spawnPoints)
-            {                
+            {
                 if (authoring.SpawnPoints != null)
                 {
                     for (int i = 0; i < authoring.SpawnPoints.Count; i++)

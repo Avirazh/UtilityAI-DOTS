@@ -27,15 +27,25 @@ namespace Assets.Core.DOTS.Systems
         {
             var entityCommandBuffer = SystemAPI.GetSingleton<BeginPresentationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
 
-            InstantiateUnitPrefab(ref state, entityCommandBuffer);
+            string seed = SystemAPI.Time.DeltaTime.ToString();
+
+            InstantiateUnitPrefab(ref state, entityCommandBuffer, seed);
             MoveUnit(ref state, entityCommandBuffer);
         }
 
-        private void InstantiateUnitPrefab(ref SystemState state, EntityCommandBuffer entityCommandBuffer) 
+        private void InstantiateUnitPrefab(ref SystemState state, EntityCommandBuffer entityCommandBuffer, string seed) 
         {
             foreach(var (unitPrefabComponent, entity) in SystemAPI.Query<UnitPrefabComponent>().WithAny<NewUnitTag>().WithEntityAccess())
             {
-                var instantiatedPrefab = Object.Instantiate(unitPrefabComponent.Value);
+                
+                System.Random random = new System.Random(seed.GetHashCode());
+                var instantiatedPrefab = Object.Instantiate(unitPrefabComponent.GameObject);
+                instantiatedPrefab.GetComponent<MeshRenderer>().material.color = new Color(
+                     (float)random.Next(0,255),
+                     (float)random.Next(0,255),
+                     (float)random.Next(0,255)
+                     );
+
                 entityCommandBuffer.AddComponent(entity, new MovableTag { transform = instantiatedPrefab.transform});
                 entityCommandBuffer.RemoveComponent<NewUnitTag>(entity);
             }

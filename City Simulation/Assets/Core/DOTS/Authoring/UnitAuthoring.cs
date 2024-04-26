@@ -10,8 +10,9 @@ public class UnitAuthoring : MonoBehaviour
         public override void Bake(UnitAuthoring authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-
-            AddComponentObject(entity, new UnitPrefabComponent { Value = authoring.UnitPrefab});
+            var meshRenderer = authoring.UnitPrefab.GetComponent<MeshRenderer>();
+            
+            AddComponentObject(entity, new UnitPrefabComponent { GameObject = authoring.UnitPrefab, Renderer = meshRenderer});
             AddComponent(entity, new NewUnitTag());
         }
     }

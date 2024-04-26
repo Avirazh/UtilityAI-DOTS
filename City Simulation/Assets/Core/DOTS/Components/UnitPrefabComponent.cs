@@ -2,6 +2,7 @@
 using UnityEngine;
 public class UnitPrefabComponent : IComponentData
 {
-    public GameObject Value;
+    public GameObject GameObject;
+    public MeshRenderer Renderer;
 }
 
